@@ -38,6 +38,10 @@ class Settings(BaseSettings):
     caldav_verify_tls: bool = True
     viactt_reminder_interval_days: int = Field(default=30, ge=1, le=90)
 
+    # ECB Data Portal (euro foreign exchange reference rates); see app/ecb.py
+    ecb_api_base_url: str = "https://data-api.ecb.europa.eu/service"
+    ecb_timeout_seconds: float = Field(default=10.0, gt=0, le=120)
+
     @property
     def caldav_configured(self) -> bool:
         return bool(self.caldav_calendar_url and self.caldav_username and self.caldav_password)

@@ -7,6 +7,9 @@
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
 
+# Captured upstream payloads must keep their original line endings (ECB sends CRLF)
+backend/tests/fixtures/*_live.csv -text
+
 # Binary assets
 *.png binary
 *.jpg binary
