@@ -78,5 +78,3 @@ backend/app/
   routers/          FastAPI endpoints
 frontend/src/       React pages: Dashboard, Payouts, Estimator, Calendar
 ```
-
-See [TASKS.md](TASKS.md) for the remaining work.
