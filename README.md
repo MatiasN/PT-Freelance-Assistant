@@ -159,5 +159,5 @@ Planned work, grouped into milestones with acceptance criteria for each item, is
 
 ## License
 
-[MIT](LICENSE) © 2026 MatiasN. The software is provided "as is", without warranty of any kind;
-see the compliance boundary above. It is not tax advice.
+[MIT](LICENSE) © 2026 Matias Nicolau Araújo. The software is provided "as is", without warranty
+of any kind; see the compliance boundary above. It is not tax advice.
