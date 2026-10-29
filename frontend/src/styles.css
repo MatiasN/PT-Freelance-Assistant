@@ -63,6 +63,11 @@ tr[aria-selected="true"] { background: var(--warning-bg); }
 .copy-field code { user-select: all; overflow-wrap: anywhere; }
 .copy-field small { width: 100%; }
 .warning { background: var(--warning-bg); padding: 0.75rem; border-radius: 6px; }
+.rate-source { grid-column: 1 / -1; font-size: 0.9rem; }
+.rate-source p { margin: 0 0 0.4rem; }
+.rate-source small { display: block; margin-top: 0.4rem; }
+.rate-source .warning { margin: 0.25rem 0; }
+.irs-amount { display: block; }
 .error { color: var(--error); }
 .deadlines { list-style: none; padding: 0; }
 .deadlines > li { background: var(--surface); border: 1px solid var(--border); border-radius: 6px;

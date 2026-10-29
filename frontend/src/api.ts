@@ -1,11 +1,31 @@
 export type Money = string;
 export type Currency = "EUR" | "USD";
 
+export type RateSource = "manual" | "ecb";
+
+/** Where a stored rate came from, plus the ECB evidence for that day either way. */
+export interface RateProvenance {
+  source: RateSource;
+  requested_date: string | null;
+  ecb_rate_date: string | null;
+  ecb_currency_per_eur: Money | null;
+  is_fallback: boolean | null;
+  fallback_reason: FallbackReason | null;
+  fetched_at: string | null;
+}
+
 export interface PayoutInput {
   payout_date: string;
   currency: Currency;
   original_amount: Money;
+  /** Rate for the Fatura-Recibo amount (CIVA art. 49.º day: invoice date if it precedes the payout). */
   currency_per_eur: Money;
+  rate_date: string | null;
+  rate_provenance: RateProvenance | null;
+  /** Rate of the payment day (CIRS art. 23.º), used for the IRS income. */
+  irs_currency_per_eur: Money | null;
+  irs_rate_date: string | null;
+  irs_rate_provenance: RateProvenance | null;
   client_name: string | null;
   notes: string | null;
   invoice_number: string | null;
@@ -15,7 +35,55 @@ export interface PayoutInput {
 export interface Payout extends PayoutInput {
   id: number;
   eur_amount: Money;
+  irs_currency_per_eur: Money;
+  irs_eur_amount: Money;
   created_at: string;
+}
+
+/** The stored IRS pair differs from the document pair (another day or another rate). */
+export function irsRateDiffers(payout: Payout): boolean {
+  return (
+    payout.irs_eur_amount !== payout.eur_amount ||
+    payout.irs_currency_per_eur !== payout.currency_per_eur ||
+    payout.irs_rate_date !== payout.rate_date
+  );
+}
+
+export type FallbackReason =
+  | "weekend"
+  | "target_holiday"
+  | "not_yet_published"
+  | "no_rate_published";
+
+export type ConversionBasis = "payout_date" | "invoice_date";
+
+export interface RateLookup {
+  /** Day asked for. */
+  requested_date: string;
+  /** ECB business day the rate belongs to; differs from requested_date on a fallback. */
+  rate_date: string;
+  currency_per_eur: Money;
+  is_fallback: boolean;
+  fallback_reason: FallbackReason | null;
+  note: string;
+  fetched_at: string;
+  from_cache: boolean;
+}
+
+/** Top level: the Fatura-Recibo rate (CIVA art. 49.º with art. 8.º n.º 1). `irs`: the
+ * payment-day rate (CIRS art. 23.º). They are the same lookup unless the invoice was issued
+ * before the payout. */
+export interface ExchangeRate extends RateLookup {
+  currency: Currency;
+  payout_date: string;
+  invoice_issued_on: string | null;
+  conversion_basis: ConversionBasis;
+  conversion_note: string;
+  irs: RateLookup;
+  rates_differ: boolean;
+  source: string;
+  source_url: string;
+  legal_basis: string;
 }
 
 export interface PortalField {
@@ -160,6 +228,14 @@ export const api = {
     request<Payout>(`/api/payouts/${id}`, { method: "PUT", body: JSON.stringify(payout) }),
   deletePayout: (id: number) => request<void>(`/api/payouts/${id}`, { method: "DELETE" }),
   invoiceFields: (id: number) => request<PortalField[]>(`/api/payouts/${id}/invoice-fields`),
+  exchangeRate: (currency: Currency, payoutDate: string, invoiceIssuedOn: string | null) =>
+    request<ExchangeRate>(
+      `/api/exchange-rates?${new URLSearchParams({
+        currency,
+        payout_date: payoutDate,
+        ...(invoiceIssuedOn ? { invoice_issued_on: invoiceIssuedOn } : {}),
+      })}`,
+    ),
   dashboard: (year: number) => request<YearOverview>(`/api/dashboard?year=${year}`),
   irsEstimate: (year: number, freelanceGross: string, employmentGross: string) =>
     request<IrsEstimate>(
