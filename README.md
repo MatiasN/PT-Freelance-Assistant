@@ -151,3 +151,13 @@ backend/app/
   routers/          FastAPI endpoints
 frontend/src/       React pages: Dashboard, Payouts, Estimator, Calendar
 ```
+
+## Roadmap
+
+Planned work, grouped into milestones with acceptance criteria for each item, is in
+[ROADMAP.md](ROADMAP.md). Open an issue before starting on an item.
+
+## License
+
+[MIT](LICENSE) © 2026 MatiasN. The software is provided "as is", without warranty of any kind;
+see the compliance boundary above. It is not tax advice.

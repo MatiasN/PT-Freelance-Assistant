@@ -2,6 +2,7 @@
 name = "pt-tax-assistant"
 version = "0.1.0"
 description = "Self-hosted organisational and calculation ledger for Portuguese freelance (Categoria B) taxes"
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

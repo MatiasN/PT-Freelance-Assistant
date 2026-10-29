@@ -1,0 +1,29 @@
+# Code owners are requested for review automatically on pull requests that touch their paths.
+# Later lines take precedence over earlier ones. Syntax:
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repository
+*                           @MatiasN
+
+# Legal and tax rules: every change needs a cited source (see ROADMAP.md, "Definition of done")
+/backend/app/fiscal/        @MatiasN
+
+# External services and stored data
+/backend/app/ecb.py         @MatiasN
+/backend/app/calendar_sync.py @MatiasN
+/backend/app/db.py          @MatiasN
+/backend/app/models.py      @MatiasN
+
+# Build, deployment and dependencies
+/Dockerfile                 @MatiasN
+/docker-compose.yml         @MatiasN
+/.env.example               @MatiasN
+/backend/pyproject.toml     @MatiasN
+/backend/uv.lock            @MatiasN
+/frontend/package.json      @MatiasN
+/frontend/package-lock.json @MatiasN
+
+# Repository governance
+/.github/                   @MatiasN
+/LICENSE                    @MatiasN
+/ROADMAP.md                 @MatiasN
