@@ -31,6 +31,8 @@ def build_invoice_fields(payout: Payout, settings: Settings) -> list[PortalField
             f" — {payout.currency.value} {payout.original_amount:.2f}"
             f" à taxa de câmbio {format_rate(payout.currency_per_eur)} {payout.currency.value}/EUR"
         )
+        if payout.rate_date is not None:
+            description += f" (taxa de referência do BCE de {payout.rate_date:%d/%m/%Y})"
 
     return [
         PortalField("Tipo de documento", "Fatura-Recibo"),

@@ -44,7 +44,8 @@ def dashboard(
     payouts = session.exec(select(Payout).where(in_year)).all()
     return build_year_overview(
         year,
-        (IncomeEntry(payout.payout_date, payout.eur_amount) for payout in payouts),
+        # Income per CIRS art. 23.º: converted on the payment day, not the invoice day.
+        (IncomeEntry(payout.payout_date, payout.irs_eur_amount) for payout in payouts),
         employment_gross=annual_employment_gross(settings),
         savings_pool_rate=settings.savings_pool_rate,
         parameters=parameters,
