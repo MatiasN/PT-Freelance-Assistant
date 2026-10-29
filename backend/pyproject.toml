@@ -1,0 +1,39 @@
+[project]
+name = "pt-tax-assistant"
+version = "0.1.0"
+description = "Self-hosted organisational and calculation ledger for Portuguese freelance (Categoria B) taxes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "caldav>=3.6.0",
+    "fastapi>=0.162.0",
+    "icalendar>=7.3.0",
+    "pydantic-settings>=2.16.1",
+    "sqlmodel>=0.0.48",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16.0",
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["caldav.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

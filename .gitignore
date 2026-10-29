@@ -1,0 +1,15 @@
+.env
+data/
+__pycache__/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+*.db
+.DS_Store
+*.py[oc]
+build/
+wheels/
+*.egg-info
